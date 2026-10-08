@@ -64,6 +64,16 @@ does not change.
 
 There is no login. Do not put this on a public network without protection.
 
+## Image
+
+GitHub Actions builds the image for `linux/amd64` and `linux/arm64` and
+pushes it to the GitHub Container Registry. A push to `main` gives the tag
+`latest`. A git tag such as `v1.2.3` gives the tags `1.2.3` and `1.2`.
+
+```sh
+docker run --rm -p 8080:8080 -v on-my-list-data:/data ghcr.io/bocan/my-list:latest
+```
+
 ## License
 
 Apache License 2.0. See [LICENSE](LICENSE).

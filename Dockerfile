@@ -1,9 +1,12 @@
-FROM golang:1.27-alpine AS build
+# The build stage runs on the build machine and cross-compiles for the target.
+FROM --platform=$BUILDPLATFORM golang:1.27-alpine AS build
+ARG TARGETOS
+ARG TARGETARCH
 WORKDIR /src
 COPY go.mod ./
 COPY *.go ./
 COPY static ./static
-RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/on-my-list . \
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -trimpath -ldflags="-s -w" -o /out/on-my-list . \
     && mkdir /out/data
 
 FROM scratch
