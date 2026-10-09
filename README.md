@@ -74,6 +74,35 @@ pushes it to the GitHub Container Registry. A push to `main` gives the tag
 docker run --rm -p 8080:8080 -v on-my-list-data:/data ghcr.io/bocan/my-list:latest
 ```
 
+### Docker Compose
+
+An example `docker-compose.yml`:
+
+```yaml
+services:
+  my-list:
+    image: ghcr.io/bocan/my-list:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: "8080"
+      MAX_BYTES: "150000"
+    volumes:
+      - my-list-data:/data
+
+volumes:
+  my-list-data:
+```
+
+Start it with `docker compose up -d`. The list file is at `/data/mylist.csv`
+in the volume. To keep it in a host directory, replace `my-list-data:/data`
+with `./data:/data` and remove the `volumes:` block at the bottom.
+
+To use a different port on the host, change only the left side of the port
+mapping, for example `"9000:8080"`. If you change `PORT`, change the right
+side of the mapping to the same value.
+
 ## License
 
 Apache License 2.0. See [LICENSE](LICENSE).
