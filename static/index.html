@@ -148,7 +148,7 @@
 
   async function load() {
     try {
-      render(await api('GET', '/api/items'));
+      render(await api('GET', 'api/items'));
     } catch (err) {
       showError(err.message);
     }
@@ -206,7 +206,7 @@
     del.title = 'Delete';
     del.textContent = '✕';
     del.addEventListener('click', () => {
-      if (confirm(`Delete "${name}"?`)) change('DELETE', '/api/items/' + item.id);
+      if (confirm(`Delete "${name}"?`)) change('DELETE', 'api/items/' + item.id);
     });
 
     li.append(text, del);
@@ -236,7 +236,7 @@
       done = true;
       const value = input.value.trim();
       if (save && value && value !== item.text) {
-        change('PUT', '/api/items/' + item.id, { text: value });
+        change('PUT', 'api/items/' + item.id, { text: value });
       } else {
         li.replaceWith(tile(item));
         layout();
@@ -253,7 +253,7 @@
     e.preventDefault();
     const text = newInput.value.trim();
     if (!text) return;
-    if (await change('POST', '/api/items', { text })) newInput.value = '';
+    if (await change('POST', 'api/items', { text })) newInput.value = '';
   });
 
   // Drag to reorder: the dragged tiles move in the DOM, then the order is saved.
@@ -302,7 +302,7 @@
     group.forEach((li) => li.classList.remove('dragging'));
     dragged = null;
     group = [];
-    if (order().join() !== orderBefore) change('PUT', '/api/order', { ids: order() });
+    if (order().join() !== orderBefore) change('PUT', 'api/order', { ids: order() });
   });
 
   load();
